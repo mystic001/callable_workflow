@@ -1,0 +1,37 @@
+name: Deploy
+
+on:
+  workflow_dispatch:
+    inputs:
+      config:
+        description: "JSON config (paste minified JSON)"
+        required: true
+        type: string
+        default: '{"app":"web","region":"westeurope","replicas":2,"tags":["prod","blue"]}'
+
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Parse JSON with jq
+        run: |
+          echo '${{ inputs.config }}' > config.json
+          app=$(jq -r '.app' config.json)
+          region=$(jq -r '.region' config.json)
+          replicas=$(jq -r '.replicas' config.json)
+          echo "APP=$app" >> $GITHUB_ENV
+          echo "REGION=$region" >> $GITHUB_ENV
+          echo "REPLICAS=$replicas" >> $GITHUB_ENV
+
+      - name: Use parsed values
+        run: |
+          echo "Deploying $APP to $REGION with $REPLICAS replicas"
+
+
+      - name: Validate config
+        shell: bash
+        run: |
+            echo '${{ inputs.config }}' | jq -e \
+            'has("app") and has("region") and has("replicas")' >/dev/null \
+            || { echo "config must include app, region, replicas"; exit 1; }
