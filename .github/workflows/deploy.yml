@@ -9,6 +9,10 @@ on:
         type: string
         default: '{"app":"web","region":"westeurope","replicas":2,"tags":["prod","blue"]}'
 
+      app_name:
+        description: "Name of the application"
+        required: true
+        type: string
 
 jobs:
   run:

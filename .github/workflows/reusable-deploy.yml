@@ -4,6 +4,9 @@ on:
       config:
         required: true
         type: string
+      app_name:
+        required: true
+        type: string
 
 jobs:
   deploy:
@@ -12,5 +15,6 @@ jobs:
       APP: ${{ fromJSON(inputs.config).app }}
       REGION: ${{ fromJSON(inputs.config).region }}
       REPLICAS: ${{ fromJSON(inputs.config).replicas }}
+      APP_NAME: ${{ inputs.app_name }}
     steps:
-      - run: echo "Deploy $APP to $REGION x$REPLICAS"
+      - run: echo "Deploy $APP to $REGION x$REPLICAS replicas for $APP_NAME"
