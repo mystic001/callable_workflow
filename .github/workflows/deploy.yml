@@ -35,3 +35,8 @@ jobs:
             echo '${{ inputs.config }}' | jq -e \
             'has("app") and has("region") and has("replicas")' >/dev/null \
             || { echo "config must include app, region, replicas"; exit 1; }
+
+  call:
+    uses: ./.github/workflows/reusable-deploy.yml
+    with:
+      config: ${{ inputs.config }}

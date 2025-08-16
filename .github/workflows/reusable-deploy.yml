@@ -1,0 +1,16 @@
+on:
+  workflow_call:
+    inputs:
+      config:
+        required: true
+        type: string
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      APP: ${{ fromJSON(inputs.config).app }}
+      REGION: ${{ fromJSON(inputs.config).region }}
+      REPLICAS: ${{ fromJSON(inputs.config).replicas }}
+    steps:
+      - run: echo "Deploy $APP to $REGION x$REPLICAS"
