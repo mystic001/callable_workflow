@@ -44,3 +44,4 @@ jobs:
     uses: ./.github/workflows/reusable-deploy.yml
     with:
       config: ${{ inputs.config }}
+      app_name: ${{ inputs.app_name }}
